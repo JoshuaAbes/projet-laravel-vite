@@ -1,76 +1,131 @@
+# Fiction Interactive - "Le Chemin vers la Gloire"
 
-# ✨ Laravel + Vue Fullstack Boilerplate ✨
+Une application de fiction interactive où les choix de l'utilisateur influencent le déroulement de l'histoire. Cette application est développée avec Laravel pour le backend et Vue.js pour le frontend.
 
-## 🎓 WebMobUi - Media Engineering - HEIG-VD 🎓
+## 📖 À propos du projet
 
-This is a fullstack Laravel and Vue.js boilerplate designed for the course.
+Ce projet est une fiction interactive qui raconte l'histoire d'un jeune footballeur, de ses débuts dans le quartier jusqu'à la finale de la Coupe du Monde. Les choix effectués par l'utilisateur déterminent le destin du personnage, avec plusieurs fins possibles.
 
----
+L'application utilise :
+- Backend : Laravel (API RESTful)
+- Frontend : Vue.js
+- Base de données : SQLite
 
-## ⚙️ Installation Steps ⚙️
+## 📋 Fonctionnalités
 
-Follow these steps to get your project up and running:
+- **Navigation interactive** : Progresser dans l'histoire à travers différents chapitres selon vos choix
+- **Sauvegarde de progression** : Mémorisation du parcours de l'utilisateur
+- **Interface responsive** : Expérience adaptée sur mobile et desktop
+- **API RESTful** : Backend structuré avec contrôleurs, models et validation
 
-### 1. Create Project Folder 📁
+## 🚀 Installation
+
+### Prérequis
+
+- PHP >= 8.1
+- Composer
+- Node.js et npm
+- SQLite
+
+### Étapes d'installation
+
+1. **Cloner le dépôt**
 
 ```bash
-mkdir YourAppName
-cd YourAppName
+git clone https://github.com/votre-username/projet-laravel-vite.git
+cd projet-laravel-vite
 ```
 
-### 2. Clone Repository & Set Upstream 🔄
-
-Clone the boilerplate repository and then point the remote origin to your own GitHub repository (make sure you create it on GitHub first!).
+2. **Installer les dépendances PHP**
 
 ```bash
-# Clone the boilerplate
-git clone https://github.com/Chabloz/WebMobUI52-fullstack.git .
-
-# Set your repository as the origin
-git remote set-url origin https://github.com/YourGitHubUsername/YourAppName.git
-```
-
-### 3. Install Dependencies 📦
-
-Install both the Node.js and PHP dependencies.
-
-```bash
-# Install Node.js dependencies and build assets
-npm install
-npm run build
-
-# Install PHP dependencies
 composer install
 ```
 
-### 4. Configure Environment 📝
-
-Copy the example environment file to create your own configuration.
+3. **Configurer l'environnement**
 
 ```bash
 cp .env.example .env
-```
-
-👉 **Important:** Edit the `.env` file if you need to configure database connections or other settings. By default, it uses SQLite.
-
-### 5. Generate Key & Run Migrations 🔑
-
-Generate the unique application key and set up the database schema.
-
-```bash
-# Generate application key
 php artisan key:generate
-
-# Run database migrations
-php artisan migrate
 ```
 
-### 6. Run the Application ▶️
+4. **Configurer la base de données**
 
-Start the development server.
+Dans le fichier `.env`, configurez SQLite :
+
+```
+DB_CONNECTION=sqlite
+DB_DATABASE=/chemin/absolu/vers/database/database.sqlite
+```
+
+Puis créez le fichier de base de données :
 
 ```bash
-composer run dev
+touch database/database.sqlite
 ```
 
-🎉 Your application should now be running! 🎉
+5. **Exécuter les migrations et seeders**
+
+```bash
+php artisan migrate --seed
+```
+
+6. **Installer les dépendances JavaScript**
+
+```bash
+npm install
+```
+
+7. **Lancer le serveur de développement**
+
+```bash
+php artisan serve
+npm run dev
+```
+
+L'application sera accessible à l'adresse [http://localhost:8000](http://localhost:8000)
+
+## 📝 Structure de l'API
+
+### Points d'accès (endpoints)
+
+| Méthode | URI | Description |
+|---------|-----|-------------|
+| GET | /v1/stories | Liste toutes les histoires publiées |
+| GET | /v1/stories/{id} | Récupère une histoire spécifique |
+| GET | /v1/chapters/{id} | Récupère un chapitre spécifique avec ses choix |
+| POST | /v1/progress | Sauvegarde la progression de l'utilisateur |
+| GET | /v1/progress | Récupère la progression de l'utilisateur |
+
+### Exemples d'utilisation
+
+```bash
+# Récupérer toutes les histoires
+curl http://localhost:8000/v1/stories
+
+# Récupérer un chapitre spécifique
+curl http://localhost:8000/v1/chapters/1
+```
+
+## 🏗️ Architecture du projet
+
+### Backend (Laravel)
+
+- **Models**: Story, Chapter, Choice, UserProgress
+- **Controllers**: StoryController, ChapterController, ChoiceController, UserProgressController
+- **Requests**: Validation des données entrantes via FormRequest
+- **Middlewares**: Protection des routes avec auth:sanctum
+
+### Frontend (Vue.js)
+
+- **Components**: StoryList, ChapterView, ChoiceSelector, etc.
+- **Stores**: Pinia pour la gestion d'état
+- **Routes**: Vue Router pour la navigation
+
+## 👥 Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou une pull request.
+
+## 📄 License
+
+Ce projet est sous license MIT.
