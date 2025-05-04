@@ -20,7 +20,7 @@ class FootballStorySeeder extends Seeder
         ]);
 
         // Charger les données depuis le fichier JSON
-        $jsonPath = database_path('seeders/data/football_story.json');
+        $jsonPath = database_path('data/story.json');
         $storyData = json_decode(File::get($jsonPath), true);
 
         // Créer les chapitres
