@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('chapters', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('story_id')->constrained()->onDelete('cascade');
+            $table->string('title');
+            $table->text('content');
+            $table->boolean('is_ending')->default(false);
             $table->timestamps();
         });
     }
