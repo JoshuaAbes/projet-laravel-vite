@@ -38,7 +38,7 @@ Route::prefix('api/v1/')->group(function () {
     Route::apiResource('choices', ChoiceController::class)->except(['index', 'show']);
     
     // Routes pour la progression utilisateur
-    Route::apiResource('progress', UserProgressController::class)->except(['show', 'update', 'destroy']);
+    Route::apiResource('progress', UserProgressController::class);
   });
 
   // Routes publiques
