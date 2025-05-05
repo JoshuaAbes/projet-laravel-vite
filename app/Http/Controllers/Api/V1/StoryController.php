@@ -21,29 +21,20 @@ class StoryController extends Controller
             ->with('chapters:id,story_id,title')
             ->get();
             
-        return response()->json([
-            'success' => true,
-            'data' => $stories,
-        ]);
+        return $this->successResponse($stories);
     }
 
     public function show(Story $story): JsonResponse
     {
         if (!$story->is_published && Auth::id() !== $story->user_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Story not found',
-            ], 404);
+            return $this->errorResponse('Story not found', 404);
         }
         
         $story->load([
             'chapters:id,story_id,title,is_ending',
         ]);
         
-        return response()->json([
-            'success' => true,
-            'data' => $story,
-        ]);
+        return $this->successResponse($story);
     }
 
     public function store(StoryRequest $request): JsonResponse
@@ -52,45 +43,28 @@ class StoryController extends Controller
         $story->user_id = Auth::id();
         $story->save();
         
-        return response()->json([
-            'success' => true,
-            'data' => $story,
-            'message' => 'Story created successfully',
-        ], 201);
+        return $this->successResponse($story, 'Story created successfully', 201);
     }
 
     public function update(StoryRequest $request, Story $story): JsonResponse
     {
         if (Auth::id() !== $story->user_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-            ], 403);
+            return $this->errorResponse('Unauthorized', 403);
         }
         
         $story->update($request->validated());
         
-        return response()->json([
-            'success' => true,
-            'data' => $story,
-            'message' => 'Story updated successfully',
-        ]);
+        return $this->successResponse($story, 'Story updated successfully');
     }
 
     public function destroy(Story $story): JsonResponse
     {
         if (Auth::id() !== $story->user_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-            ], 403);
+            return $this->errorResponse('Unauthorized', 403);
         }
         
         $story->delete();
         
-        return response()->json([
-            'success' => true,
-            'message' => 'Story deleted successfully',
-        ]);
+        return $this->successResponse(null, 'Story deleted successfully');
     }
 }

@@ -18,21 +18,8 @@ class ChapterController extends Controller
 
     public function show(Chapter $chapter): JsonResponse
     {
-        $story = $chapter->story;
-        
-        if (!$story->is_published && Auth::id() !== $story->user_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Chapter not found',
-            ], 404);
-        }
-        
         $chapter->load('choices:id,chapter_id,text,next_chapter_id');
-        
-        return response()->json([
-            'success' => true,
-            'data' => $chapter,
-        ]);
+        return $this->successResponse($chapter);
     }
 
     public function store(ChapterRequest $request): JsonResponse
@@ -40,53 +27,34 @@ class ChapterController extends Controller
         $story = Story::findOrFail($request->story_id);
         
         if (Auth::id() !== $story->user_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-            ], 403);
+            return $this->errorResponse('Unauthorized', 403);
         }
         
-        $chapter = Chapter::create($request->validated());
+        $chapter = new Chapter($request->validated());
+        $chapter->save();
         
-        return response()->json([
-            'success' => true,
-            'data' => $chapter,
-            'message' => 'Chapter created successfully',
-        ], 201);
+        return $this->successResponse($chapter, 'Chapter created successfully', 201);
     }
 
     public function update(ChapterRequest $request, Chapter $chapter): JsonResponse
     {
         if (Auth::id() !== $chapter->story->user_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-            ], 403);
+            return $this->errorResponse('Unauthorized', 403);
         }
         
         $chapter->update($request->validated());
         
-        return response()->json([
-            'success' => true,
-            'data' => $chapter,
-            'message' => 'Chapter updated successfully',
-        ]);
+        return $this->successResponse($chapter, 'Chapter updated successfully');
     }
 
     public function destroy(Chapter $chapter): JsonResponse
     {
         if (Auth::id() !== $chapter->story->user_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-            ], 403);
+            return $this->errorResponse('Unauthorized', 403);
         }
         
         $chapter->delete();
         
-        return response()->json([
-            'success' => true,
-            'message' => 'Chapter deleted successfully',
-        ]);
+        return $this->successResponse(null, 'Chapter deleted successfully');
     }
 }
