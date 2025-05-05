@@ -1,38 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\ChapterController;
-use App\Http\Controllers\Api\V1\ChoiceController;
-use App\Http\Controllers\Api\V1\StoryController;
-use App\Http\Controllers\Api\V1\UserProgressController;
 
 Route::get('/', function () {
-  return view('test');
+    return view('welcome');
 });
 
-// Instead of using Sanctum (or something similar) for API authentication,
-// we are using the built-in Laravel session authentication system.
-require_once __DIR__ . '/api.php';
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-*/
-
-// API Version 1 Group
-Route::prefix('v1')->group(function () {
-    // Stories routes
-    Route::apiResource('stories', StoryController::class);
-    
-    // Chapters routes
-    Route::apiResource('chapters', ChapterController::class)->except(['index']);
-    
-    // Choices routes
-    Route::apiResource('choices', ChoiceController::class)->except(['index', 'show']);
-    
-    // User progress routes
-    Route::get('progress', [UserProgressController::class, 'index']);
-    Route::get('progress/{storyId}', [UserProgressController::class, 'show']);
-    Route::post('progress', [UserProgressController::class, 'store']);
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+require __DIR__.'/auth.php';
