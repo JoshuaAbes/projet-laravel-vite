@@ -7,7 +7,7 @@ trait ApiResponse
     /**
      * Renvoyer une réponse de succès
      */
-    protected function successResponse($data, string $message = null, int $code = 200)
+    protected function successResponse($data, ?string $message = null, int $code = 200)
     {
         return response()->json([
             'success' => true,
