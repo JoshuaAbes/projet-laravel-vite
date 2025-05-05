@@ -1,4 +1,3 @@
-projet-laravel-vite\config\cors.php
 <?php
 
 return [
