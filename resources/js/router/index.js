@@ -1,20 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import PageHome from '@/pages/PageHome.vue';
+import PageStory from '@/pages/PageStory.vue';
+import PageChapter from '@/pages/PageChapter.vue';
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/pages/PageHome.vue')
+    component: PageHome
   },
   {
     path: '/story/:id',
     name: 'story',
-    component: () => import('@/pages/PageStory.vue')
+    component: PageStory
   },
   {
     path: '/chapter/:id',
     name: 'chapter',
-    component: () => import('@/pages/PageChapter.vue')
+    component: PageChapter
   }
 ];
 
